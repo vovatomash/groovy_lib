@@ -2,6 +2,7 @@ class Lib {
 def stageDecorator(String name, Closure c){
     def r
     try {
+        println('----------------')
         r = c()
     } catch (hudson.AbortException er) {
         println('result')
