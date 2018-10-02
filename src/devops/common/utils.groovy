@@ -1,4 +1,5 @@
-class Lib {
+// src/devops/common/utils.groovy
+package devops.common;
 def stageDecorator(String name, Closure c){
     def r
     try {
@@ -15,5 +16,4 @@ def stageDecorator(String name, Closure c){
     }
     return r
 
-}
 }
