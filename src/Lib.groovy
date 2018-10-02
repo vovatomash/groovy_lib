@@ -1,3 +1,5 @@
+class Lib {
+}
 def stageDecorator(String name, Closure c){
     def r
     try {
