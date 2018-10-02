@@ -1,5 +1,4 @@
 class Lib {
-}
 def stageDecorator(String name, Closure c){
     def r
     try {
@@ -14,4 +13,6 @@ def stageDecorator(String name, Closure c){
         throw er1
     }
     return r
+
+}
 }
