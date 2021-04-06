@@ -3,7 +3,7 @@ package devops.common;
 import com.cloudbees.plugins.credentials.domains.*
 import org.jenkinsci.plugins.plaincredentials.StringCredentials
 
-class GitHubNotify implements Serializable {
+public class GitHubNotify implements Serializable {
 
     def steps
     String credentialsId
