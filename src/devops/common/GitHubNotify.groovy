@@ -28,6 +28,7 @@ public class GitHubNotify implements Serializable {
         def http = new URL(apiEndpoint).openConnection() as HttpURLConnection
         http.setRequestMethod('POST')
         http.setDoOutput(true)
+        this.steps.println(this.steps.pipeline_utils.getSecretById(this.credentialsId))
         http.setRequestProperty("PRIVATE-TOKEN", this.steps.pipeline_utils.getSecretById(this.credentialsId))
         // http.setRequestProperty("Accept", 'application/vnd.github.v3+json')
         http.setRequestProperty("Accept", 'application/json')
