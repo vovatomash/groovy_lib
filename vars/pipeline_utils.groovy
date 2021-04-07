@@ -1,4 +1,3 @@
-import devops.common
 
 import com.cloudbees.plugins.credentials.domains.*
 import org.jenkinsci.plugins.plaincredentials.StringCredentials
