@@ -76,12 +76,15 @@ public class GitHubNotify implements Serializable {
             throw new Exception("GitHubNotify.sha is empty, please set commit sha explicitly")
         }
         def String api_endpoint = "https://api.github.com/repos/${this.account}/${this.repo}/statuses/${this.sha}"
+
         def Map data = [
             state: "${state}".toString(),
             target_url: "${this.targetUrl}".toString(),
             description: "${description}".toString(),
             context: "${context}".toString()
         ]
+        this.steps.println("api_endpoint: ${api_endpoint}")
+        this.steps.println(data)
 
         this.sendPostRequest(api_endpoint, data, true)
     }
