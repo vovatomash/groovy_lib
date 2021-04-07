@@ -29,7 +29,8 @@ public class GitHubNotify implements Serializable {
         http.setRequestMethod('POST')
         http.setDoOutput(true)
         http.setRequestProperty("PRIVATE-TOKEN", this.steps.pipeline_utils.getSecretById(this.credentialsId))
-        http.setRequestProperty("Accept", 'application/vnd.github.v3+json')
+        // http.setRequestProperty("Accept", 'application/vnd.github.v3+json')
+        http.setRequestProperty("Accept", 'application/json')
         http.setRequestProperty("Content-Type", "application/json")
         def json = new groovy.json.JsonBuilder()
         json requestData
