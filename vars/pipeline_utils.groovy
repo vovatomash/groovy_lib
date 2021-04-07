@@ -1,4 +1,7 @@
-import devops.common.utils
+import devops.common
+
+import com.cloudbees.plugins.credentials.domains.*
+import org.jenkinsci.plugins.plaincredentials.StringCredentials
 
 
 def gitHubNotifyStatus(String credentialsId, String account, String repo, String sha, String target_url, String state, String context, String description, boolean showResponce = false){
@@ -29,4 +32,17 @@ def gitHubNotifyStatus(String credentialsId, String account, String repo, String
             println "response: ${response}"
         }
     }
+}
+
+def getSecretById(String secretId) {
+    // set Credentials domain name (null means is it global)
+    def domainName = null
+
+    def credentialsStore = Jenkins.instance.getExtensionList('com.cloudbees.plugins.credentials.SystemCredentialsProvider')[0]?.getStore()
+    domain = new Domain(domainName, null, Collections.<DomainSpecification>emptyList())
+    def c = credentialsStore?.getCredentials(domain).findResult { it.id == secretId ? it : null }
+    if ( c ) {
+      return c.secret.getPlainText()
+    }
+    return null
 }
