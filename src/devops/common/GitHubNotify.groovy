@@ -2,6 +2,7 @@ package devops.common;
 
 import com.cloudbees.plugins.credentials.domains.*
 import org.jenkinsci.plugins.plaincredentials.StringCredentials
+import org.jenkinsci.plugins.workflow.cps.CpsThread
 
 public class GitHubNotify implements Serializable {
 
@@ -40,13 +41,13 @@ public class GitHubNotify implements Serializable {
         if (http.responseCode in [200, 201]) {
             response = http.inputStream.getText('UTF-8')
             if (showResponce) {
-                steps.println("response: ${response}")
+                this.steps.println("response: ${response}")
             }
             return [true, response]
         } else {
             response = http.errorStream.getText('UTF-8')
             if (showResponce) {
-                steps.println("response: ${response}")
+                this.steps.println("response: ${response}")
             }
             return [false, response]
         }
