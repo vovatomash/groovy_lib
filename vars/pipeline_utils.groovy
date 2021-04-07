@@ -2,6 +2,9 @@
 import com.cloudbees.plugins.credentials.domains.*
 import org.jenkinsci.plugins.plaincredentials.StringCredentials
 
+def getGitBranchSha(String branch) {
+    return sh(script: "git rev-parse origin/${branch}^{commit}", returnStdout: true).trim().split('\n').collect{it as String}[0]
+}
 
 def gitHubNotifyStatus(String credentialsId, String account, String repo, String sha, String target_url, String state, String context, String description, boolean showResponce = false){
     def Map data = [
