@@ -13,6 +13,14 @@ public class GitHubNotify implements Serializable {
     String sha
     String targetUrl
 
+    def GitHubNotify(steps, String credentialsId, String repo, String sha, String targetUrl) {
+        this.steps = steps
+        this.credentialsId = credentialsId
+        this.repo = repo
+        this.sha = sha
+        this.targetUrl = targetUrl
+    }
+
     def getSecretById(String secretId) {
         // set Credentials domain name (null means is it global)
         def domainName = null
