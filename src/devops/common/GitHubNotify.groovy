@@ -2,7 +2,7 @@ package devops.common;
 
 import com.cloudbees.plugins.credentials.domains.*
 import org.jenkinsci.plugins.plaincredentials.StringCredentials
-import org.jenkinsci.plugins.workflow.cps.CpsThread
+
 
 public class GitHubNotify implements Serializable {
 
@@ -22,25 +22,13 @@ public class GitHubNotify implements Serializable {
         this.targetUrl = targetUrl
     }
 
-    def getSecretById(String secretId) {
-        // set Credentials domain name (null means is it global)
-        def domainName = null
-
-        def credentialsStore = Jenkins.instance.getExtensionList('com.cloudbees.plugins.credentials.SystemCredentialsProvider')[0]?.getStore()
-        domain = new Domain(domainName, null, Collections.<DomainSpecification>emptyList())
-        def c = credentialsStore?.getCredentials(domain).findResult { it.id == secretId ? it : null }
-        if ( c ) {
-          return c.secret.getPlainText()
-        }
-        return null
-    }
 
     def sendPostRequest(String apiEndpoint, Map requestData, boolean showResponce = false) {
         def response = null
         def http = new URL(apiEndpoint).openConnection() as HttpURLConnection
         http.setRequestMethod('POST')
         http.setDoOutput(true)
-        http.setRequestProperty("PRIVATE-TOKEN", this.getSecretById(this.credentialsId))
+        http.setRequestProperty("PRIVATE-TOKEN", this.steps.pipeline_utils.getSecretById(this.credentialsId))
         // http.setRequestProperty("Accept", 'application/json')
         http.setRequestProperty("Content-Type", "application/json")
         def json = new groovy.json.JsonBuilder()
