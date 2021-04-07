@@ -13,9 +13,10 @@ public class GitHubNotify implements Serializable {
     String sha
     String targetUrl
 
-    def GitHubNotify(steps, String credentialsId, String repo, String sha, String targetUrl) {
+    def GitHubNotify(steps, String credentialsId, String account, String repo, String sha, String targetUrl) {
         this.steps = steps
         this.credentialsId = credentialsId
+        this.account = account
         this.repo = repo
         this.sha = sha
         this.targetUrl = targetUrl
