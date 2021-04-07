@@ -36,6 +36,7 @@ def gitHubNotifyStatus(String credentialsId, String account, String repo, String
     }
 }
 
+
 def getSecretById(String secretId) {
     // set Credentials domain name (null means is it global)
     def domainName = null
@@ -47,4 +48,90 @@ def getSecretById(String secretId) {
       return c.secret.getPlainText()
     }
     return null
+}
+
+
+def isStartedByUser(jobInstance) {
+    // Check if the build was triggered by some jenkins user
+    def usercause = jobInstance.getCause(hudson.model.Cause.UserIdCause.class)
+    if (usercause != null) {
+        return usercause.getUserName()
+    }
+    return
+}
+
+
+def isStartedByWebHook(jobInstance) {
+    // Check if the build was triggered by SCM change
+    def scmCause = jobInstance.getCause(hudson.triggers.SCMTrigger.SCMTriggerCause)
+    if (scmCause != null) {
+        return scmCause.getShortDescription()
+    }
+    return
+}
+
+
+def isStartedByJob(jobInstance) {
+    //Check if the build was triggered by some jenkins project(job)
+    def upstreamcause = jobInstance.getCause(hudson.model.Cause.UpstreamCause.class)
+    if (upstreamcause != null) {
+        def job = Jenkins.getInstance().getItemByFullName(upstreamcause.getUpstreamProject(), hudson.model.Job.class)
+        if (job != null) {
+            def upstream = job.getBuildByNumber(upstreamcause.getUpstreamBuild())
+            if (upstream != null) {
+                return upstream.getFullDisplayName()
+            }
+        }
+    }
+    return
+}
+
+
+def findCause(upStreamBuild) {
+    def result
+
+    result = isStartedByWebHook(upStreamBuild)
+    if ( result ) {
+        return result
+    }
+
+    result = isStartedByUser(upStreamBuild)
+    if ( result ) {
+        return result
+    }
+
+    result = isStartedByJob(upStreamBuild)
+    if ( result ) {
+        return result
+    }
+    return;
+}
+
+
+def notifySlack(String channel , String buildStatus = 'STARTED', String message='', List attachments=[]) {
+    // Build status of null means success.
+    buildStatus = buildStatus ?: 'SUCCESS'
+    def color
+    def startedBy = ''
+
+    if (buildStatus == 'STARTED') {
+        color = '#D4DADF'
+        startedBy = findCause(currentBuild.rawBuild)
+    } else if (buildStatus == 'SUCCESS') {
+        color = '#BDFFC3'
+    } else if (buildStatus == 'UNSTABLE') {
+        color = '#FFFE89'
+    } else {
+        color = '#FF9FA1'
+    }
+
+    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+    if (startedBy != '') {
+        msg += "\nStarted by: ${startedBy}"
+    }
+    if (message != '') {
+        msg += "\nMessage: ${message}"
+    }
+
+    slackSend(color: color, message: msg, channel: channel, username: "Jenkins", attachments: attachments)
 }
