@@ -113,19 +113,23 @@ def notifySlack(String channel , String buildStatus = 'STARTED', String message=
     buildStatus = buildStatus ?: 'SUCCESS'
     def color
     def startedBy = ''
-
+    def emoji = ''
     if (buildStatus == 'STARTED') {
         color = '#D4DADF'
         startedBy = findCause(currentBuild.rawBuild)
+        emoji = ":sonic:"
     } else if (buildStatus == 'SUCCESS') {
         color = '#BDFFC3'
+        emoji = ":champagne:"
     } else if (buildStatus == 'UNSTABLE') {
         color = '#FFFE89'
+        emoji = ":facepalm:"
     } else {
         color = '#FF9FA1'
+        emoji = ":facepalm:"
     }
 
-    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+    def msg = "${emoji}${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
     if (startedBy != '') {
         msg += "\nStarted by: ${startedBy}"
     }
