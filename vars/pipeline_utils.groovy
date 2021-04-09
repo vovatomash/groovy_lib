@@ -126,7 +126,7 @@ def notifySlack(String channel , String buildStatus = 'STARTED', String message=
         emoji = ":check_no::fix_it_bold: "
     } else {
         color = '#FF9FA1'
-        emoji = ":check_no::fix_it_boild: "
+        emoji = ":check_no::fix_it_bold: "
     }
 
     def msg = "${emoji}${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
