@@ -67,8 +67,8 @@ def isStartedByWebHook(jobInstance) {
     if (scmCause != null) {
         return scmCause.getShortDescription()
     }
-    if ("${GIT_AUTHOR}" != '' ) {
-        return "${GIT_AUTHOR}"
+    if (env.GIT_AUTHOR && env.GIT_AUTHOR != '' ) {
+        return env.GIT_AUTHOR
     }
     return
 }
