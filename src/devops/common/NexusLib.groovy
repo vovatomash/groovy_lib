@@ -8,13 +8,11 @@ import groovy.json.JsonOutput
 public class NexusLib implements Serializable {
     String nexusUrl
     String nexusApiEndpoint
-    boolean showResponce
 
 
-    def NexusLib(String nexusUrl, boolean showResponce = false) {
+    def NexusLib(String nexusUrl) {
         this.nexusUrl = nexusUrl
         this.nexusApiEndpoint = nexusUrl + '/service/rest/v1/search?sort=version'
-        this.showResponce = showResponce
     }
 
 
@@ -68,9 +66,6 @@ public class NexusLib implements Serializable {
             return(response)
         } else {
             response = http.errorStream.getText('UTF-8')
-        }
-        if (this.showResponce) {
-            println("response: ${response}")
         }
     }
 
