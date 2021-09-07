@@ -18,7 +18,7 @@ public class NL implements Serializable {
     }
 
 
-    def getNexusActifacts(String repository, String name, String group, String version, String continuationToken, String direction='desc') {
+    def getNexusActifacts(String repository, String name, String group, String version, String continuationToken = null, String direction='desc') {
         def response = null
 
         def nullTrustManager = [
