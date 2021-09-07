@@ -18,7 +18,7 @@ public class NexusLib implements Serializable {
     }
 
 
-    def getNexusActifacts(String repository, String name, String group, String version='', String continuationToken = null, String direction='desc') {
+    def getNexusActifacts(String repository, String name, String group, String version = '', String continuationToken = null, String direction='desc') {
         def response = null
 
         def nullTrustManager = [
@@ -94,7 +94,7 @@ public class NexusLib implements Serializable {
 
     def getLatestVersion(String repository, String name, String group) {
         def parser = new groovy.json.JsonSlurper()
-        def parsedJSON = parser.parseText(this.getNexusActifacts(repository, name, group))
+        def parsedJSON = parser.parseText(this.getNexusActifacts(repository, name, group, ''))
         return parsedJSON.items[0]?.version
     }
 
