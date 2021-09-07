@@ -5,13 +5,13 @@ import groovy.json.JsonOutput
 // import java.util.logging.Logger;
 
 
-public class NL implements Serializable {
+public class NexusLib implements Serializable {
     String nexusUrl
     String nexusApiEndpoint
     boolean showResponce
 
 
-    def NL(String nexusUrl, boolean showResponce = false) {
+    def NexusLib(String nexusUrl, boolean showResponce = false) {
         this.nexusUrl = nexusUrl
         this.nexusApiEndpoint = nexusUrl + '/service/rest/v1/search?sort=version'
         this.showResponce = showResponce
