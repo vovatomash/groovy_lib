@@ -142,3 +142,20 @@ def notifySlack(String channel , String buildStatus = 'STARTED', String message=
 
     slackSend(color: color, message: msg, channel: channel, username: "Jenkins", attachments: attachments)
 }
+
+
+def getSlackButton(String hostname, String env, String service) {
+  String url = 'https://' + hostname;
+  url += '/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)';
+  url += '&logPosition=(end:now,start:now-1h,streamLive:!f)';
+  url += '&logFilter=(language:kuery,query:%27fields.env:%22';
+  url += env + '%22%20and%20syslog.identifier:%22';
+  url += service + '%22%20%27)';
+
+  String button = '{\n' + '\t\'name\': \'logs\'\n';
+  button += '\t\'text\': \'Logs\'\n';
+  button += '\t\'type\': \'button\'\n';
+  button += '\t\'value\':\'' + url + '\'\n' + '}';
+
+  return button;
+}
